@@ -1,0 +1,943 @@
+{
+	"info": {
+		"_postman_id": "f55a6bbf-eec1-487c-aa03-08261a33bc97",
+		"name": "Tests_HABITACION",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32277613",
+		"_collection_link": "https://www.postman.com/navigation-meteorologist-65546144/workspace/tfg/collection/32277613-f55a6bbf-eec1-487c-aa03-08261a33bc97?action=share&source=collection_link&creator=32277613"
+	},
+	"item": [
+		{
+			"name": "20 Eliminar habitacion con id habitacion en la url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.not.empty; // Verifica que el body no esté vacío\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprobamos que nos devuelve el mensaje de que se ha borrado el hotel con su id\", function () {\r",
+							"   pm.expect(pm.response.text()).to.include(\"Se elimina la habitacion\"); // Verifica que el mensaje de borrado esté presente en el cuerpo de la respuesta\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{ELIMINAR_HABITACION}}101",
+					"host": [
+						"{{URL}}{{ELIMINAR_HABITACION}}101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "20.1 Crear habitacion que se ha borrado comprando datos para que sea igual que la eliminada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_Habitacion\": 1023,\r\n    \"id_Hotel\": 1,\r\n    \"capacidad\": 2,\r\n    \"precio_Noche\": 150.00,\r\n    \"incluye_Desayuno\": true,\r\n    \"ocupada\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "21 Eliminar habitacion con id habitacion VACIO en la url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body = pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(404); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Not Found\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{ELIMINAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{ELIMINAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "22 Eliminar habitacion con id habitacion distinto a un nuemero en la url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.not.empty; // Verifica que el body no esté vacío\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprobamos que nos devuelve un mensaje de error\", function () {\r",
+							"   pm.expect(pm.response.text()).to.include(\"Se elimina la habitacion\"); // Verifica que el mensaje de borrado esté presente en el cuerpo de la respuesta\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{ELIMINAR_HABITACION}}202",
+					"host": [
+						"{{URL}}{{ELIMINAR_HABITACION}}202"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "23 Modificar ocupacion de una habitacion existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{MODIFICAR_OCUPACION}}301",
+					"host": [
+						"{{URL}}{{MODIFICAR_OCUPACION}}301"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "24 Modificar ocupacion de una habitacion pasando la url sin ningun idHabitacion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body = pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(404); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio y tenga el texto indicado\", function() {\r",
+							"    pm.expect(jsonData.error).to.eql(\"Not Found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{MODIFICAR_OCUPACION}}",
+					"host": [
+						"{{URL}}{{MODIFICAR_OCUPACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "25 Modificar ocupacion de una habitacion pasando la url con un parametro distinto a un numero entero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{MODIFICAR_OCUPACION}}false",
+					"host": [
+						"{{URL}}{{MODIFICAR_OCUPACION}}false"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "26 insertar habitacion dando valor a todos sus campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id_Habitacion\": 1123,\r\n  \"id_Hotel\": 1,\r\n  \"capacidad\": 2,\r\n  \"precio_Noche\": 100.00,\r\n  \"incluye_Desayuno\": true,\r\n  \"ocupada\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "26.1 Borrar habitacion creada para la anterior prueba",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.not.empty; // Verifica que el body no esté vacío\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprobamos que nos devuelve el mensaje de que se ha borrado el hotel con su id\", function () {\r",
+							"   pm.expect(pm.response.text()).to.include(\"Se elimina la habitacion\"); // Verifica que el mensaje de borrado esté presente en el cuerpo de la respuesta\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{ELIMINAR_HABITACION}}{{id_habitacion}}",
+					"host": [
+						"{{URL}}{{ELIMINAR_HABITACION}}{{id_habitacion}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "27 insertar habitacion dando valor a todos sus campos menos a idHabitacion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"id_Hotel\": 1,\r\n      \"tamano\": 20,\r\n      \"capacidad\": 2,\r\n      \"precio_Noche\": 150.00,\r\n      \"incluye_Desayuno\": true,\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29 insertar habitacion dando valor a todos sus campos menos a idHotel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"tamano\": 20,\r\n      \"capacidad\": 2,\r\n      \"precio_Noche\": 150.00,\r\n      \"incluye_Desayuno\": true,\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "30 insertar habitacion dando valor a todos sus campos menos a capacidad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"tamano\": 2,\r\n      \"precio_Noche\": 150.00,\r\n      \"incluye_Desayuno\": true,\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "31 insertar habitacion dando valor a todos sus campos menos a precio_noche",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"capacidad\": 2,\r\n      \"incluye_Desayuno\": true,\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "32 insertar habitacion dando valor a todos sus campos menos a incluye_desayuno",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"capacidad\": 2,\r\n      \"tamano\": 4,\r\n      \"precio_Noche\": 150.00,\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "33 insertar habitacion dando valor a todos sus campos menos a ocupada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"capacidad\": 2,\r\n      \"tamano\": 4,\r\n      \"precio_Noche\": 150.00,\r\n      \"incluye_Desayuno\": true\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "34 insertar habitacion dando valor a todos sus campos y cambiando el tipo de datos epserado en capacidad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"tamano\": 20,\r\n      \"capacidad\": \"hola\",\r\n      \"precio_Noche\": 150.00,\r\n      \"incluye_Desayuno\": true,\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "35 insertar habitacion dando valor a todos sus campos y cambiando el tipo de datos epserado en precio_noche",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"tamano\": 20,\r\n      \"capacidad\": 2,\r\n      \"precio_Noche\": \"Hola\",\r\n      \"incluye_Desayuno\": true,\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "36 insertar habitacion dando valor a todos sus campos y cambiando el tipo de datos epserado en incluye_desayuno",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"tamano\": 20,\r\n      \"capacidad\": 2,\r\n      \"precio_Noche\": \"150.00\",\r\n      \"incluye_Desayuno\": \"true\",\r\n      \"ocupada\": false\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "37 insertar habitacion dando valor a todos sus campos y cambiando el tipo de datos epserado en ocupada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id_Habitacion\": 102,\r\n      \"id_Hotel\": 1,\r\n      \"tamano\": 20,\r\n      \"capacidad\": 2,\r\n      \"precio_Noche\": 150.00,\r\n      \"incluye_Desayuno\": true,\r\n      \"ocupada\": \"true\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HABITACION}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HABITACION}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,1348 @@
+{
+	"info": {
+		"_postman_id": "a9902b45-fb65-45d3-8632-78110553426f",
+		"name": "Tests_HOTEL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32277613",
+		"_collection_link": "https://www.postman.com/navigation-meteorologist-65546144/workspace/tfg/collection/32277613-a9902b45-fb65-45d3-8632-78110553426f?action=share&source=collection_link&creator=32277613"
+	},
+	"item": [
+		{
+			"name": "TOKEN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check Response Data\",function(){\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"TOKEN\",jsonData.token);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "autorizacion",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoianVhbiIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE3MTUyNzI3MzAsImV4cCI6MTcxNTI3MzMzMH0.GmyTjNh_o6-mr4AewNCnWwQoleHuvAaZHOlfIAe-ogujyYAusbNtQIapOUbKNAKjgbL_x21Obo8oYzQK_UI_zQ",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/api/user?username=juan&password=juan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "juan"
+						},
+						{
+							"key": "password",
+							"value": "juan"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1 busqueda hoteles por localidad /leon",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body=pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function() {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							" // Verifica el numero de registro\r",
+							"pm.test(\"Comprobación idhotel y localidad\", function() {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4\r",
+							"    pm.expect(jsonData[0].idHotel).to.eql(3);\r",
+							"\t\tpm.expect(jsonData[1].idHotel).to.eql(4);\r",
+							"\r",
+							"\t\tpm.expect(jsonData[0].localidad).to.eql(\"Leon\");\r",
+							"\t\tpm.expect(jsonData[1].localidad).to.eql(\"Leon\");\r",
+							"});\r",
+							"\r",
+							"    "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "autorizacion",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{LOCALIDAD}}leon",
+					"host": [
+						"{{URL}}{{LOCALIDAD}}leon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2 busqueda hoteles por localidad /",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body=pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(404); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function() {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							" // Verifica el numero de registro\r",
+							"pm.test(\"Comprobación numero de registro del medicamento\", function() {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4 y que en la localidad aparece Leon\r",
+							"    pm.expect(jsonData.status).to.eql(404);\r",
+							"\t\tpm.expect(jsonData.error).to.eql(\"Not Found\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{LOCALIDAD}}",
+					"host": [
+						"{{URL}}{{LOCALIDAD}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3 busqueda hoteles por localidad /caceres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(404); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"La localidad indicada no existe\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{LOCALIDAD}}caceres",
+					"host": [
+						"{{URL}}{{LOCALIDAD}}caceres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4 busqueda hoteles por categoria /4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body=pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function() {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							" // Verifica el numero de registro\r",
+							"pm.test(\"Comprobación categoria del hotel\", function() {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4\r",
+							"    pm.expect(jsonData[0].categoria).to.eql(4);\r",
+							"\tpm.expect(jsonData[1].categoria).to.eql(4);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{CATEGORIA}}4",
+					"host": [
+						"{{URL}}{{CATEGORIA}}4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5 busqueda hoteles por categoria /",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(404); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"La categoria indicada no existe\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{CATEGORIA}}7",
+					"host": [
+						"{{URL}}{{CATEGORIA}}7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6 busqueda hoteles por categoria /0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(404); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"La categoria indicada no existe\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{CATEGORIA}}0",
+					"host": [
+						"{{URL}}{{CATEGORIA}}0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7 busqueda hoteles por categoria /6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(404); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"La categoria indicada no existe\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{CATEGORIA}}6",
+					"host": [
+						"{{URL}}{{CATEGORIA}}6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9 añadir hotel sin clave primaria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body = pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Comprobamos los valores del hotel nuevo\r",
+							"pm.test(\"Comprobamos los datos introducidos en nuestro nuevo hotel\", function () {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4\r",
+							"    pm.expect(jsonData.nombre).to.eql(\"Palace\");\r",
+							"    pm.expect(jsonData.descripcion).to.eql(\"Centro\");\r",
+							"    pm.expect(jsonData.categoria).to.eql(4);\r",
+							"    pm.expect(jsonData.tiene_piscina).to.eql(true);\r",
+							"    pm.expect(jsonData.localidad).to.eql(\"Santander\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Palace\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Santander\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.1 comprueba que el hotel se añadio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body = pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Comprobamos los valores del hotel nuevo\r",
+							"pm.test(\"Comprobamos los datos introducidos en nuestro nuevo hotel\", function () {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4\r",
+							"    pm.expect(jsonData[0].nombre).to.eql(\"Palace\");\r",
+							"    pm.expect(jsonData[0].descripcion).to.eql(\"Centro\");\r",
+							"    pm.expect(jsonData[0].categoria).to.eql(4);\r",
+							"    pm.expect(jsonData[0].tiene_piscina).to.eql(true);\r",
+							"    pm.expect(jsonData[0].localidad).to.eql(\"Santander\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check Response Data\",function(){\r",
+							"    pm.environment.set(\"id_hotel\",jsonData[0].idHotel);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Santander\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{LOCALIDAD}}santander",
+					"host": [
+						"{{URL}}{{LOCALIDAD}}santander"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.2 Eliminando hotel creado para prueba",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.not.empty; // Verifica que el body no esté vacío\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprobamos que nos devuelve el mensaje de que se ha borrado el hotel con su id\", function () {\r",
+							"    var expectedText = \"Hotel con id \" + pm.environment.get(\"id_hotel\") + \" borrado\";\r",
+							"    pm.expect(pm.response.text()).to.include(expectedText);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{BORRAR_HOTEL}}{{id_hotel}}",
+					"host": [
+						"{{URL}}{{BORRAR_HOTEL}}{{id_hotel}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10 añadir hotel rellenando todos los campos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body = pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Comprobamos los valores del hotel nuevo\r",
+							"pm.test(\"Comprobamos los datos introducidos en nuestro nuevo hotel\", function () {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4\r",
+							"    pm.expect(jsonData.nombre).to.eql(\"Plentzia\");\r",
+							"    pm.expect(jsonData.descripcion).to.eql(\"Centro\");\r",
+							"    pm.expect(jsonData.categoria).to.eql(4);\r",
+							"    pm.expect(jsonData.tiene_piscina).to.eql(true);\r",
+							"    pm.expect(jsonData.localidad).to.eql(\"Zaragoza\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id_hotel\": 8,\r\n  \"nombre\": \"Plentzia\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Zaragoza\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10.1 comprueba que el hotel se añadio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body = pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Comprobamos los valores del hotel nuevo\r",
+							"pm.test(\"Comprobamos los datos introducidos en nuestro nuevo hotel\", function () {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4\r",
+							"    pm.expect(jsonData[0].nombre).to.eql(\"Plentzia\");\r",
+							"    pm.expect(jsonData[0].descripcion).to.eql(\"Centro\");\r",
+							"    pm.expect(jsonData[0].categoria).to.eql(4);\r",
+							"    pm.expect(jsonData[0].tiene_piscina).to.eql(true);\r",
+							"    pm.expect(jsonData[0].localidad).to.eql(\"Zaragoza\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check Response Data\",function(){\r",
+							"    pm.environment.set(\"id_hotel\",jsonData[0].idHotel);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Santander\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{LOCALIDAD}}zaragoza",
+					"host": [
+						"{{URL}}{{LOCALIDAD}}zaragoza"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10.2 Eliminando hotel creado para prueba",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.not.empty; // Verifica que el body no esté vacío\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprobamos que nos devuelve el mensaje de que se ha borrado el hotel con su id\", function () {\r",
+							"    var expectedText = \"Hotel con id \" + pm.environment.get(\"id_hotel\") + \" borrado\";\r",
+							"    pm.expect(pm.response.text()).to.include(expectedText);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{BORRAR_HOTEL}}{{id_hotel}}",
+					"host": [
+						"{{URL}}{{BORRAR_HOTEL}}{{id_hotel}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11 añadir hotel sin campo nombre",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Santander\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12 añadir hotel sin campo descripcion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body=pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Comprobamos los valores del hotel nuevo\r",
+							"pm.test(\"Comprobamos los datos introducidos en nuestro nuevo hotel\", function () {\r",
+							"    // Comprobación de los valores de todos los campos\r",
+							"    pm.expect(jsonData.nombre).to.eql(\"Olid\");\r",
+							"    pm.expect(jsonData.descripcion).to.eql(null);\r",
+							"    pm.expect(jsonData.categoria).to.eql(4);\r",
+							"    pm.expect(jsonData.tiene_piscina).to.eql(true);\r",
+							"    pm.expect(jsonData.localidad).to.eql(\"Bilbao\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Bilbao\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12.1 comprobamos que el hotel que hemos creado esta en la bbdd",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json(); // Obtiene los datos de la respuesta en formato JSON\r",
+							"\r",
+							"var body=pm.response.text();\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"//Verifica que el body no este vacio\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(body).to.be.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Comprobamos los valores del hotel nuevo\r",
+							"pm.test(\"Comprobamos los datos introducidos en nuestro nuevo hotel\", function () {\r",
+							"    // Comprobación de los 2 ids de los hoteles de leon que son 3 y 4\r",
+							"    pm.expect(jsonData[0].nombre).to.eql(\"Olid\");\r",
+							"    pm.expect(jsonData[0].categoria).to.eql(4);\r",
+							"    pm.expect(jsonData[0].descripcion).to.eql(null);\r",
+							"    pm.expect(jsonData[0].tiene_piscina).to.eql(true);\r",
+							"    pm.expect(jsonData[0].localidad).to.eql(\"Bilbao\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check Response Data\",function(){\r",
+							"    pm.environment.set(\"id_hotel\",jsonData[0].idHotel);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Bilbao\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{LOCALIDAD}}Bilbao",
+					"host": [
+						"{{URL}}{{LOCALIDAD}}Bilbao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12.2 Eliminando hotel creado para prueba",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado de la respuesta\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que la respuesta tenga un estado 200 (OK)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprueba que el body no este vacio\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.not.empty; // Verifica que el body no esté vacío\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Comprobamos que nos devuelve el mensaje de que se ha borrado el hotel con su id\", function () {\r",
+							"    var expectedText = \"Hotel con id \" + pm.environment.get(\"id_hotel\") + \" borrado\";\r",
+							"    pm.expect(pm.response.text()).to.include(expectedText);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}{{BORRAR_HOTEL}}{{id_hotel}}",
+					"host": [
+						"{{URL}}{{BORRAR_HOTEL}}{{id_hotel}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13 añadir hotel sin campo categoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"descripcion\": \"Centro\",\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Bilbao\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14 añadir hotel sin campo tiene_piscina",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"localidad\": \"Bilbao\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15 añadir hotel sin campo localidad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "16 añadir hotel cambiando el tipo de dato en el nombre",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": Olid,\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Leon\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "17 añadir hotel cambiando el tipo de dato en la categoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": Olid,\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": true,\r\n  \"localidad\": \"Leon\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "18 añadir hotel cambiando el tipo de dato en tiene_piscina",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": \"hola\",\r\n  \"localidad\": \"Leon\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "19 añadir hotel cambiando el tipo de dato en localidad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var body = pm.response.text(); // Obtiene el cuerpo de la respuesta como texto\r",
+							"\r",
+							"// Verifica el estado de la respuesta\r",
+							"pm.test(\"Estado de la respuesta\", function() {\r",
+							"    pm.response.to.have.status(400); // Verifica que la respuesta tenga un estado 400\r",
+							"});\r",
+							"\r",
+							"// Verifica el mensaje devuelto\r",
+							"pm.test(\"Verificar mensaje devuelto\", function() {\r",
+							"    pm.expect(body).to.include(\"Error al añadir objeto\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "{{AUTORIZACION}}",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Olid\",\r\n  \"descripcion\": \"Centro\",\r\n  \"categoria\": 4,\r\n  \"tiene_piscina\": \"true\",\r\n  \"localidad\": !\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{INSERTAR_HOTEL}}",
+					"host": [
+						"{{URL}}{{INSERTAR_HOTEL}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
